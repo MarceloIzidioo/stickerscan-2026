@@ -126,13 +126,49 @@ export async function recognizeStickerFromImage(imageData) {
       }
     }
 
-    // Fallback: Busca por nome
+    // Fallback: Busca por nome e seleção (Sistema de Pontuação)
     if (!matchedSticker && aiResult.nome) {
-      matchedSticker = stickersData.find(s => {
-        const query = String(aiResult.nome).toLowerCase();
-        return s.nome.toLowerCase().includes(query) || query.includes(s.nome.toLowerCase());
-      });
-      if (matchedSticker) confidence = 0.85; // Menor confiança se encontrou só por nome
+      const queryName = String(aiResult.nome).toLowerCase().trim();
+      const querySelecao = aiResult.selecao ? String(aiResult.selecao).toLowerCase().trim() : "";
+
+      let bestMatch = null;
+      let highestScore = 0;
+
+      for (const s of stickersData) {
+        let score = 0;
+        const sName = s.nome.toLowerCase();
+        const sSel = s.selecao.toLowerCase();
+
+        // 1. Avalia o Nome
+        if (sName === queryName) {
+          score += 50; // Match exato é muito forte
+        } else if (sName.includes(queryName) || queryName.includes(sName)) {
+           // Match parcial: só ganha pontos se não for uma palavra muito curta, para evitar colisões bobas
+           if (sName.length >= 4 && queryName.length >= 4) {
+             score += 15;
+           }
+        }
+
+        // 2. Avalia a Seleção
+        if (querySelecao) {
+          if (sSel === querySelecao) {
+            score += 30; // Match exato de seleção
+          } else if (sSel.includes(querySelecao) || querySelecao.includes(sSel)) {
+            score += 10; // Match parcial de seleção
+          }
+        }
+
+        if (score > highestScore) {
+          highestScore = score;
+          bestMatch = s;
+        }
+      }
+
+      // Só aceitamos o match se a pontuação for razoável (pelo menos um match parcial bom ou nome exato)
+      if (bestMatch && highestScore >= 15) {
+        matchedSticker = bestMatch;
+        confidence = highestScore >= 50 ? 0.90 : 0.80; // Ajuste da confiança baseada na pontuação
+      }
     }
 
     if (!matchedSticker) {
