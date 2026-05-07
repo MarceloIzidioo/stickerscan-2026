@@ -1,7 +1,35 @@
+import { useState, useEffect } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 
 export default function Layout({ children }) {
   const location = useLocation();
+  const [installPrompt, setInstallPrompt] = useState(null);
+
+  useEffect(() => {
+    const handleBeforeInstallPrompt = (e) => {
+      // Prevent the mini-infobar from appearing on mobile
+      e.preventDefault();
+      // Stash the event so it can be triggered later.
+      setInstallPrompt(e);
+    };
+
+    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+
+    return () => {
+      window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+    };
+  }, []);
+
+  const handleInstallClick = async () => {
+    if (!installPrompt) return;
+    // Show the install prompt
+    installPrompt.prompt();
+    // Wait for the user to respond to the prompt
+    const { outcome } = await installPrompt.userChoice;
+    if (outcome === 'accepted') {
+      setInstallPrompt(null);
+    }
+  };
 
   const navItems = [
     { path: '/', icon: '🏠', label: 'Início' },
@@ -69,6 +97,42 @@ export default function Layout({ children }) {
           </NavLink>
         </div>
       </header>
+
+      {/* PWA Install Banner */}
+      {installPrompt && (
+        <div style={{
+          background: 'linear-gradient(135deg, #d4af37, #b8941e)',
+          padding: '12px 16px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          color: '#000',
+          fontWeight: 700,
+          fontFamily: 'var(--font-heading)',
+          fontSize: 13,
+          boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
+          position: 'relative',
+          zIndex: 90,
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+            <span style={{ fontSize: 20 }}>📲</span>
+            Instale o app na sua tela inicial!
+          </div>
+          <button onClick={handleInstallClick} style={{
+            background: '#000',
+            color: '#d4af37',
+            border: 'none',
+            padding: '8px 14px',
+            borderRadius: 8,
+            fontWeight: 800,
+            cursor: 'pointer',
+            fontSize: 13,
+            boxShadow: '0 2px 4px rgba(0,0,0,0.2)',
+          }}>
+            Instalar
+          </button>
+        </div>
+      )}
 
       {/* Main content */}
       <main style={{ maxWidth: 800, margin: '0 auto', padding: '16px 16px 0' }}>
