@@ -1,0 +1,55 @@
+[
+  { "id": "BRA-001", "numero": "BRA-001", "nome": "Vinícius Júnior", "selecao": "Brasil", "clube": "Real Madrid", "categoria": "Jogador", "raridade": "Ouro", "imagemUrl": "" },
+  { "id": "BRA-002", "numero": "BRA-002", "nome": "Rodrygo", "selecao": "Brasil", "clube": "Real Madrid", "categoria": "Jogador", "raridade": "Base", "imagemUrl": "" },
+  { "id": "BRA-003", "numero": "BRA-003", "nome": "Endrick", "selecao": "Brasil", "clube": "Real Madrid", "categoria": "Jogador", "raridade": "Prata", "imagemUrl": "" },
+  { "id": "BRA-004", "numero": "BRA-004", "nome": "Raphinha", "selecao": "Brasil", "clube": "Barcelona", "categoria": "Jogador", "raridade": "Base", "imagemUrl": "" },
+  { "id": "BRA-005", "numero": "BRA-005", "nome": "Escudo Brasil", "selecao": "Brasil", "clube": "", "categoria": "Escudo", "raridade": "Lendária", "imagemUrl": "" },
+
+  { "id": "ARG-001", "numero": "ARG-001", "nome": "Lionel Messi", "selecao": "Argentina", "clube": "Inter Miami", "categoria": "Jogador", "raridade": "Lendária", "imagemUrl": "" },
+  { "id": "ARG-002", "numero": "ARG-002", "nome": "Julián Álvarez", "selecao": "Argentina", "clube": "Atlético de Madrid", "categoria": "Jogador", "raridade": "Base", "imagemUrl": "" },
+  { "id": "ARG-003", "numero": "ARG-003", "nome": "Lautaro Martínez", "selecao": "Argentina", "clube": "Inter de Milão", "categoria": "Jogador", "raridade": "Prata", "imagemUrl": "" },
+  { "id": "ARG-004", "numero": "ARG-004", "nome": "Escudo Argentina", "selecao": "Argentina", "clube": "", "categoria": "Escudo", "raridade": "Ouro", "imagemUrl": "" },
+
+  { "id": "FRA-001", "numero": "FRA-001", "nome": "Kylian Mbappé", "selecao": "França", "clube": "Real Madrid", "categoria": "Jogador", "raridade": "Lendária", "imagemUrl": "" },
+  { "id": "FRA-002", "numero": "FRA-002", "nome": "Antoine Griezmann", "selecao": "França", "clube": "Atlético de Madrid", "categoria": "Jogador", "raridade": "Prata", "imagemUrl": "" },
+  { "id": "FRA-003", "numero": "FRA-003", "nome": "Aurélien Tchouaméni", "selecao": "França", "clube": "Real Madrid", "categoria": "Jogador", "raridade": "Base", "imagemUrl": "" },
+  { "id": "FRA-004", "numero": "FRA-004", "nome": "Escudo França", "selecao": "França", "clube": "", "categoria": "Escudo", "raridade": "Ouro", "imagemUrl": "" },
+
+  { "id": "GER-001", "numero": "GER-001", "nome": "Jamal Musiala", "selecao": "Alemanha", "clube": "Bayern de Munique", "categoria": "Jogador", "raridade": "Ouro", "imagemUrl": "" },
+  { "id": "GER-002", "numero": "GER-002", "nome": "Florian Wirtz", "selecao": "Alemanha", "clube": "Bayer Leverkusen", "categoria": "Jogador", "raridade": "Prata", "imagemUrl": "" },
+  { "id": "GER-003", "numero": "GER-003", "nome": "Kai Havertz", "selecao": "Alemanha", "clube": "Arsenal", "categoria": "Jogador", "raridade": "Base", "imagemUrl": "" },
+  { "id": "GER-004", "numero": "GER-004", "nome": "Escudo Alemanha", "selecao": "Alemanha", "clube": "", "categoria": "Escudo", "raridade": "Ouro", "imagemUrl": "" },
+
+  { "id": "ESP-001", "numero": "ESP-001", "nome": "Lamine Yamal", "selecao": "Espanha", "clube": "Barcelona", "categoria": "Jogador", "raridade": "Ouro", "imagemUrl": "" },
+  { "id": "ESP-002", "numero": "ESP-002", "nome": "Pedri", "selecao": "Espanha", "clube": "Barcelona", "categoria": "Jogador", "raridade": "Prata", "imagemUrl": "" },
+  { "id": "ESP-003", "numero": "ESP-003", "nome": "Rodri", "selecao": "Espanha", "clube": "Manchester City", "categoria": "Jogador", "raridade": "Base", "imagemUrl": "" },
+  { "id": "ESP-004", "numero": "ESP-004", "nome": "Escudo Espanha", "selecao": "Espanha", "clube": "", "categoria": "Escudo", "raridade": "Lendária", "imagemUrl": "" },
+
+  { "id": "ENG-001", "numero": "ENG-001", "nome": "Jude Bellingham", "selecao": "Inglaterra", "clube": "Real Madrid", "categoria": "Jogador", "raridade": "Ouro", "imagemUrl": "" },
+  { "id": "ENG-002", "numero": "ENG-002", "nome": "Bukayo Saka", "selecao": "Inglaterra", "clube": "Arsenal", "categoria": "Jogador", "raridade": "Prata", "imagemUrl": "" },
+  { "id": "ENG-003", "numero": "ENG-003", "nome": "Phil Foden", "selecao": "Inglaterra", "clube": "Manchester City", "categoria": "Jogador", "raridade": "Base", "imagemUrl": "" },
+  { "id": "ENG-004", "numero": "ENG-004", "nome": "Escudo Inglaterra", "selecao": "Inglaterra", "clube": "", "categoria": "Escudo", "raridade": "Ouro", "imagemUrl": "" },
+
+  { "id": "POR-001", "numero": "POR-001", "nome": "Cristiano Ronaldo", "selecao": "Portugal", "clube": "Al-Nassr", "categoria": "Jogador", "raridade": "Lendária", "imagemUrl": "" },
+  { "id": "POR-002", "numero": "POR-002", "nome": "Bruno Fernandes", "selecao": "Portugal", "clube": "Manchester United", "categoria": "Jogador", "raridade": "Prata", "imagemUrl": "" },
+  { "id": "POR-003", "numero": "POR-003", "nome": "Rafael Leão", "selecao": "Portugal", "clube": "Milan", "categoria": "Jogador", "raridade": "Base", "imagemUrl": "" },
+  { "id": "POR-004", "numero": "POR-004", "nome": "Escudo Portugal", "selecao": "Portugal", "clube": "", "categoria": "Escudo", "raridade": "Ouro", "imagemUrl": "" },
+
+  { "id": "JPN-001", "numero": "JPN-001", "nome": "Takefusa Kubo", "selecao": "Japão", "clube": "Real Sociedad", "categoria": "Jogador", "raridade": "Prata", "imagemUrl": "" },
+  { "id": "JPN-002", "numero": "JPN-002", "nome": "Kaoru Mitoma", "selecao": "Japão", "clube": "Brighton", "categoria": "Jogador", "raridade": "Base", "imagemUrl": "" },
+  { "id": "JPN-003", "numero": "JPN-003", "nome": "Takehiro Tomiyasu", "selecao": "Japão", "clube": "Arsenal", "categoria": "Jogador", "raridade": "Base", "imagemUrl": "" },
+  { "id": "JPN-004", "numero": "JPN-004", "nome": "Escudo Japão", "selecao": "Japão", "clube": "", "categoria": "Escudo", "raridade": "Ouro", "imagemUrl": "" },
+
+  { "id": "MEX-001", "numero": "MEX-001", "nome": "Hirving Lozano", "selecao": "México", "clube": "PSV", "categoria": "Jogador", "raridade": "Prata", "imagemUrl": "" },
+  { "id": "MEX-002", "numero": "MEX-002", "nome": "Edson Álvarez", "selecao": "México", "clube": "West Ham", "categoria": "Jogador", "raridade": "Base", "imagemUrl": "" },
+  { "id": "MEX-003", "numero": "MEX-003", "nome": "Santiago Giménez", "selecao": "México", "clube": "Feyenoord", "categoria": "Jogador", "raridade": "Base", "imagemUrl": "" },
+  { "id": "MEX-004", "numero": "MEX-004", "nome": "Escudo México", "selecao": "México", "clube": "", "categoria": "Escudo", "raridade": "Ouro", "imagemUrl": "" },
+
+  { "id": "USA-001", "numero": "USA-001", "nome": "Christian Pulisic", "selecao": "Estados Unidos", "clube": "Milan", "categoria": "Jogador", "raridade": "Ouro", "imagemUrl": "" },
+  { "id": "USA-002", "numero": "USA-002", "nome": "Gio Reyna", "selecao": "Estados Unidos", "clube": "Borussia Dortmund", "categoria": "Jogador", "raridade": "Prata", "imagemUrl": "" },
+  { "id": "USA-003", "numero": "USA-003", "nome": "Weston McKennie", "selecao": "Estados Unidos", "clube": "Juventus", "categoria": "Jogador", "raridade": "Base", "imagemUrl": "" },
+  { "id": "USA-004", "numero": "USA-004", "nome": "Escudo Estados Unidos", "selecao": "Estados Unidos", "clube": "", "categoria": "Escudo", "raridade": "Ouro", "imagemUrl": "" },
+
+  { "id": "PAN-001", "numero": "PAN-001", "nome": "Adalberto Carrasquilla", "selecao": "Panamá", "clube": "Houston Dynamo", "categoria": "Jogador", "raridade": "Ouro", "imagemUrl": "" },
+  { "id": "PAN-002", "numero": "PAN-002", "nome": "Escudo Panamá", "selecao": "Panamá", "clube": "", "categoria": "Escudo", "raridade": "Prata", "imagemUrl": "" }
+]
