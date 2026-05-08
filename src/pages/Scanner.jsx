@@ -419,7 +419,7 @@ export default function Scanner() {
               {Math.round(result.confidence * 100)}%
             </div>
             <div>
-              <div style={{ fontSize: 12, fontWeight: 600, color: '#e2e8f0' }}>Confiança simulada</div>
+              <div style={{ fontSize: 12, fontWeight: 600, color: '#e2e8f0' }}>Precisão da Leitura</div>
               <div style={{ fontSize: 10, color: '#64748b' }}>
                 OCR: {result.signals.ocrNumber} | Visual: {Math.round(result.signals.visualSimilarity * 100)}%
               </div>

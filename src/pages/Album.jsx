@@ -3,7 +3,7 @@ import { createPortal } from 'react-dom';
 import { useSearchParams } from 'react-router-dom';
 import stickersData from '../data/stickers';
 import { getCollection, addSticker, removeSticker, getViewMode } from '../services/collectionService';
-import { getStickerStatus, getTeams } from '../utils/statusUtils';
+import { getStickerStatus, getTeams, TEAM_FLAGS } from '../utils/statusUtils';
 import StickerCard from '../components/StickerCard';
 import Toast from '../components/Toast';
 
@@ -226,85 +226,112 @@ export default function Album() {
                   {groupStickers.length} figurinha{groupStickers.length !== 1 ? 's' : ''}
                 </span>
               </h3>
-              <div style={{
-                display: 'grid',
-                gridTemplateColumns: viewMode === 'simplified' ? 'repeat(auto-fill, minmax(64px, 1fr))' : 'repeat(auto-fill, minmax(280px, 1fr))',
-                gap: 10,
-              }}>
-                {groupStickers.map(sticker => {
-                  const qty = collection[sticker.id] || 0;
-                  
-                  if (viewMode === 'complete') {
-                    return (
-                      <StickerCard
-                        key={sticker.id}
-                        sticker={sticker}
-                        quantity={qty}
-                        onAdd={() => handleAdd(sticker.id)}
-                        onRemove={() => handleRemove(sticker.id)}
-                      />
-                    );
-                  }
 
-                  // Visão Simplificada
-                  const hasSticker = qty > 0;
-                  return (
-                    <button
-                      key={sticker.id}
-                      onClick={(e) => {
-                        e.preventDefault();
-                        setSelectedSticker(sticker);
-                      }}
-                      title={`${sticker.nome} - ${sticker.selecao}`}
-                      style={{
-                        appearance: 'none',
-                        outline: 'none',
-                        padding: 0,
-                        width: '100%',
-                        aspectRatio: '1',
-                        borderRadius: 8,
-                        background: hasSticker ? 'linear-gradient(135deg, rgba(34,197,94,0.15), rgba(34,197,94,0.05))' : 'rgba(255,255,255,0.03)',
-                        border: `1px solid ${hasSticker ? 'rgba(34,197,94,0.4)' : 'rgba(255,255,255,0.08)'}`,
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        cursor: 'pointer',
-                        position: 'relative',
-                        transition: 'all 0.2s ease',
-                      }}
-                    >
-                      <span style={{ 
-                        fontSize: 12, 
-                        fontWeight: 700, 
-                        color: hasSticker ? '#4ade80' : '#64748b', 
-                        textAlign: 'center',
-                        wordBreak: 'break-word',
-                        padding: '0 4px'
-                      }}>
-                        {sticker.numero}
-                      </span>
-                      {qty > 1 && (
-                        <div style={{
-                          position: 'absolute',
-                          top: -6,
-                          right: -6,
-                          background: '#facc15',
-                          color: '#000',
-                          fontSize: 10,
-                          fontWeight: 800,
-                          padding: '2px 6px',
-                          borderRadius: 10,
-                          boxShadow: '0 2px 4px rgba(0,0,0,0.3)',
-                          zIndex: 2,
-                        }}>
-                          +{qty - 1}
-                        </div>
-                      )}
-                    </button>
-                  );
-                })}
-              </div>
+              {Object.entries(
+                groupStickers.reduce((acc, sticker) => {
+                  if (!acc[sticker.selecao]) acc[sticker.selecao] = [];
+                  acc[sticker.selecao].push(sticker);
+                  return acc;
+                }, {})
+              )
+              // Optional: sort teams alphabetically
+              .sort(([a], [b]) => a.localeCompare(b))
+              .map(([selecao, selecaoStickers]) => (
+                <div key={selecao} style={{ marginBottom: 24 }}>
+                  <h4 style={{
+                    fontSize: 13,
+                    fontWeight: 600,
+                    color: '#94a3b8',
+                    marginBottom: 10,
+                    textTransform: 'uppercase',
+                    letterSpacing: 0.5,
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 6
+                  }}>
+                    {TEAM_FLAGS[selecao] || ''} {selecao}
+                  </h4>
+                  <div style={{
+                    display: 'grid',
+                    gridTemplateColumns: viewMode === 'simplified' ? 'repeat(auto-fill, minmax(64px, 1fr))' : 'repeat(auto-fill, minmax(280px, 1fr))',
+                    gap: 10,
+                  }}>
+                    {selecaoStickers.map(sticker => {
+                      const qty = collection[sticker.id] || 0;
+                      
+                      if (viewMode === 'complete') {
+                        return (
+                          <StickerCard
+                            key={sticker.id}
+                            sticker={sticker}
+                            quantity={qty}
+                            onAdd={() => handleAdd(sticker.id)}
+                            onRemove={() => handleRemove(sticker.id)}
+                          />
+                        );
+                      }
+
+                      // Visão Simplificada
+                      const hasSticker = qty > 0;
+                      return (
+                        <button
+                          key={sticker.id}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            setSelectedSticker(sticker);
+                          }}
+                          title={`${sticker.nome} - ${sticker.selecao}`}
+                          style={{
+                            appearance: 'none',
+                            outline: 'none',
+                            padding: 0,
+                            width: '100%',
+                            aspectRatio: '1',
+                            borderRadius: 8,
+                            background: hasSticker ? 'linear-gradient(135deg, rgba(34,197,94,0.15), rgba(34,197,94,0.05))' : 'rgba(255,255,255,0.03)',
+                            border: `1px solid ${hasSticker ? 'rgba(34,197,94,0.4)' : 'rgba(255,255,255,0.08)'}`,
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            cursor: 'pointer',
+                            position: 'relative',
+                            transition: 'all 0.2s ease',
+                          }}
+                        >
+                          <span style={{ 
+                            fontSize: 12, 
+                            fontWeight: 700, 
+                            color: hasSticker ? '#4ade80' : '#64748b', 
+                            textAlign: 'center',
+                            wordBreak: 'break-word',
+                            padding: '0 4px'
+                          }}>
+                            {sticker.numero}
+                          </span>
+                          {qty > 1 && (
+                            <div style={{
+                              position: 'absolute',
+                              top: -6,
+                              right: -6,
+                              background: '#facc15',
+                              color: '#000',
+                              fontSize: 10,
+                              fontWeight: 800,
+                              padding: '2px 6px',
+                              borderRadius: 10,
+                              boxShadow: '0 2px 4px rgba(0,0,0,0.3)',
+                              zIndex: 2,
+                            }}>
+                              +{qty - 1}
+                            </div>
+                          )}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              ))}
             </div>
           );
         })}

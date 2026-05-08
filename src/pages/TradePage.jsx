@@ -47,61 +47,10 @@ export default function TradePage() {
         fontSize: 20,
         fontWeight: 800,
         color: '#f1f5f9',
-        marginBottom: 6,
+        marginBottom: 24,
       }}>
-        🤝 Meu Link de Troca
+        🤝 Central de Trocas
       </h2>
-      <p style={{ fontSize: 13, color: '#94a3b8', marginBottom: 16 }}>
-        Compartilhe seu perfil de troca com os amigos.
-      </p>
-
-      {/* Profile card */}
-      <div className="glass-card" style={{
-        padding: 20,
-        marginBottom: 16,
-        textAlign: 'center',
-        background: 'linear-gradient(135deg, rgba(212,175,55,0.05), rgba(0,166,81,0.05))',
-        border: '1px solid rgba(212,175,55,0.15)',
-      }}>
-        <div style={{
-          width: 60,
-          height: 60,
-          borderRadius: '50%',
-          background: 'linear-gradient(135deg, #d4af37, #00a651)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          fontSize: 28,
-          margin: '0 auto 10px',
-        }}>
-          {userName ? userName[0].toUpperCase() : '👤'}
-        </div>
-        <h3 style={{
-          fontFamily: 'var(--font-heading)',
-          fontSize: 18,
-          fontWeight: 800,
-          color: '#f1f5f9',
-          marginBottom: 4,
-        }}>
-          {userName || 'Colecionador'}
-        </h3>
-        <p style={{ fontSize: 12, color: '#64748b', marginBottom: 12 }}>
-          stickerscan.app/u/{(userName || 'colecionador').toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '')}
-        </p>
-        <ProgressBar percentage={progress.percentage} />
-        <div style={{
-          display: 'flex',
-          justifyContent: 'center',
-          gap: 20,
-          marginTop: 12,
-          fontSize: 12,
-          color: '#94a3b8',
-        }}>
-          <span>✅ {progress.owned} tenho</span>
-          <span>🔄 {progress.duplicateUnits} para troca</span>
-          <span>❌ {progress.missing} faltam</span>
-        </div>
-      </div>
 
       {/* Action buttons removed as requested by the user */}
 
