@@ -54,7 +54,7 @@ export async function recognizeStickerFromImage(imageData) {
       });
     }
 
-    const prompt = "Você é um especialista em figurinhas da Copa do Mundo 2026. A imagem pode ser a FRENTE da figurinha (contém o nome do jogador e a seleção) ou o VERSO (contém apenas o código alfanumérico, ex: BRA-1, PAN-10). Extraia o que estiver visível. Retorne um JSON com os campos: 'numero' (se visível), 'nome' (se visível), 'selecao' (se visível). Se a informação não estiver na foto, envie null. Retorne APENAS o JSON limpo, sem marcações markdown.";
+    const prompt = "Você é um especialista em figurinhas da Copa do Mundo 2026. A imagem pode ser a FRENTE da figurinha (com nome e seleção) ou o VERSO (apenas com o código alfanumérico, ex: MAR14, BRA-1). Retorne um JSON estrito com os campos: 'numero' (OBRIGATÓRIO usar essa chave para o código alfanumérico do verso ou frente), 'nome' (se visível), 'selecao' (se visível). Se a informação não existir, use null. Retorne APENAS o JSON limpo.";
 
     const payload = {
       contents: [
@@ -111,8 +111,10 @@ export async function recognizeStickerFromImage(imageData) {
     let confidence = 0.99;
 
     let numberMatch = null;
-    if (aiResult.numero) {
-      const rawNum = String(aiResult.numero).toUpperCase();
+    const extractedNum = aiResult.numero || aiResult.codigo || aiResult.número || aiResult.id;
+    
+    if (extractedNum) {
+      const rawNum = String(extractedNum).toUpperCase();
       numberMatch = stickersData.find(s => s.numero.toUpperCase() === rawNum);
       if (!numberMatch) {
         const normalize = (n) => String(n).replace(/[-\s]/g, '').replace(/([A-Z]+)0+([1-9])/g, '$1$2').toUpperCase();
