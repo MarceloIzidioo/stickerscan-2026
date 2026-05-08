@@ -13,10 +13,10 @@ export const TEAM_FLAGS = {
   'Portugal': '🇵🇹',
   'Japão': '🇯🇵',
   'México': '🇲🇽',
-  'Estados Unidos': '🇺🇸',
+  'EUA': '🇺🇸',
   'África do Sul': '🇿🇦',
   'Coreia do Sul': '🇰🇷',
-  'República Tcheca': '🇨🇿',
+  'Tchéquia': '🇨🇿',
   'Canadá': '🇨🇦',
   'Bósnia e Herzegovina': '🇧🇦',
   'Catar': '🇶🇦',
@@ -30,7 +30,7 @@ export const TEAM_FLAGS = {
   'Curaçao': '🇨🇼',
   'Costa do Marfim': '🇨🇮',
   'Equador': '🇪🇨',
-  'Holanda': '🇳🇱',
+  'Países Baixos': '🇳🇱',
   'Suécia': '🇸🇪',
   'Tunísia': '🇹🇳',
   'Bélgica': '🇧🇪',
@@ -57,6 +57,44 @@ export const TEAM_FLAGS = {
   'Panamá': '🇵🇦',
   '—': '✨'
 };
+
+export const WORLD_CUP_GROUPS = [
+  { name: 'Grupo A', teams: ['México', 'África do Sul', 'Coreia do Sul', 'Tchéquia'] },
+  { name: 'Grupo B', teams: ['Canadá', 'Bósnia e Herzegovina', 'Catar', 'Suíça'] },
+  { name: 'Grupo C', teams: ['Brasil', 'Marrocos', 'Haiti', 'Escócia'] },
+  { name: 'Grupo D', teams: ['EUA', 'Paraguai', 'Austrália', 'Turquia'] },
+  { name: 'Grupo E', teams: ['Alemanha', 'Curaçao', 'Costa do Marfim', 'Equador'] },
+  { name: 'Grupo F', teams: ['Países Baixos', 'Japão', 'Suécia', 'Tunísia'] },
+  { name: 'Grupo G', teams: ['Bélgica', 'Egito', 'Irã', 'Nova Zelândia'] },
+  { name: 'Grupo H', teams: ['Espanha', 'Cabo Verde', 'Arábia Saudita', 'Uruguai'] },
+  { name: 'Grupo I', teams: ['França', 'Senegal', 'Iraque', 'Noruega'] },
+  { name: 'Grupo J', teams: ['Argentina', 'Argélia', 'Áustria', 'Jordânia'] },
+  { name: 'Grupo K', teams: ['Portugal', 'RD Congo', 'Uzbequistão', 'Colômbia'] },
+  { name: 'Grupo L', teams: ['Inglaterra', 'Croácia', 'Gana', 'Panamá'] }
+];
+
+export const GROUPS_ORDER = [
+  'Especiais',
+  ...WORLD_CUP_GROUPS.map(g => g.name),
+  'Outras Seleções'
+];
+
+export function getGroupForTeam(team) {
+  if (team === '—') return 'Especiais';
+  const group = WORLD_CUP_GROUPS.find(g => g.teams.includes(team));
+  return group ? group.name : 'Outras Seleções';
+}
+
+export const TEAMS_ORDER_FLAT = [
+  '—',
+  ...WORLD_CUP_GROUPS.flatMap(g => g.teams)
+];
+
+export function getTeamSortIndex(teamName) {
+  const index = TEAMS_ORDER_FLAT.indexOf(teamName);
+  return index !== -1 ? index : 999;
+}
+
 
 // Cores por raridade
 export const RARITY_COLORS = {

@@ -3,35 +3,9 @@ import { createPortal } from 'react-dom';
 import { useSearchParams } from 'react-router-dom';
 import stickersData from '../data/stickers';
 import { getCollection, addSticker, removeSticker, getViewMode } from '../services/collectionService';
-import { getStickerStatus, getTeams, TEAM_FLAGS } from '../utils/statusUtils';
+import { getStickerStatus, getTeams, TEAM_FLAGS, getGroupForTeam, GROUPS_ORDER, getTeamSortIndex } from '../utils/statusUtils';
 import StickerCard from '../components/StickerCard';
 import Toast from '../components/Toast';
-
-const WORLD_CUP_GROUPS = [
-  { name: 'Grupo A', teams: ['México', 'África do Sul', 'Coreia do Sul', 'Tchéquia'] },
-  { name: 'Grupo B', teams: ['Canadá', 'Bósnia e Herzegovina', 'Catar', 'Suíça'] },
-  { name: 'Grupo C', teams: ['Brasil', 'Marrocos', 'Haiti', 'Escócia'] },
-  { name: 'Grupo D', teams: ['EUA', 'Paraguai', 'Austrália', 'Turquia'] },
-  { name: 'Grupo E', teams: ['Alemanha', 'Curaçao', 'Costa do Marfim', 'Equador'] },
-  { name: 'Grupo F', teams: ['Países Baixos', 'Japão', 'Suécia', 'Tunísia'] },
-  { name: 'Grupo G', teams: ['Bélgica', 'Egito', 'Irã', 'Nova Zelândia'] },
-  { name: 'Grupo H', teams: ['Espanha', 'Cabo Verde', 'Arábia Saudita', 'Uruguai'] },
-  { name: 'Grupo I', teams: ['França', 'Senegal', 'Iraque', 'Noruega'] },
-  { name: 'Grupo J', teams: ['Argentina', 'Argélia', 'Áustria', 'Jordânia'] },
-  { name: 'Grupo K', teams: ['Portugal', 'RD Congo', 'Uzbequistão', 'Colômbia'] },
-  { name: 'Grupo L', teams: ['Inglaterra', 'Croácia', 'Gana', 'Panamá'] }
-];
-
-const EXTRA_TEAMS = [];
-
-function getGroupForTeam(team) {
-  if (team === '—') return 'Especiais';
-  if (EXTRA_TEAMS.includes(team)) return 'Outras Seleções';
-  const group = WORLD_CUP_GROUPS.find(g => g.teams.includes(team));
-  return group ? group.name : 'Outras Seleções';
-}
-
-const GROUPS_ORDER = ['Especiais', 'Grupo A', 'Grupo B', 'Grupo C', 'Grupo D', 'Grupo E', 'Grupo F', 'Grupo G', 'Grupo H', 'Grupo I', 'Grupo J', 'Grupo K', 'Grupo L', 'Outras Seleções'];
 
 export default function Album() {
   const [searchParams] = useSearchParams();
@@ -54,7 +28,8 @@ export default function Album() {
     if (selecao) setFilterTeam(selecao);
   }, [searchParams]);
 
-  const teams = useMemo(() => getTeams(stickersData).filter(t => t !== '—').sort(), []);
+  // Sort teams for the filter chips using official order
+  const teams = useMemo(() => getTeams(stickersData).filter(t => t !== '—').sort((a, b) => getTeamSortIndex(a) - getTeamSortIndex(b)), []);
   const rarities = ['Base', 'Especial'];
 
   const handleAdd = useCallback((id) => {
@@ -234,8 +209,8 @@ export default function Album() {
                   return acc;
                 }, {})
               )
-                // Optional: sort teams alphabetically
-                .sort(([a], [b]) => a.localeCompare(b))
+                // Optional: sort teams exactly by the official World Cup order
+              .sort(([a], [b]) => getTeamSortIndex(a) - getTeamSortIndex(b))
                 .map(([selecao, selecaoStickers]) => (
                   <div key={selecao} style={{ marginBottom: 24 }}>
                     <h4 style={{
