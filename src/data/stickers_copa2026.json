@@ -4,6 +4,166 @@
   "nota": "Números seguem o formato alfanumérico oficial Panini (ex: BRA-14). Clubes baseados nos dados disponíveis no momento da produção do álbum. IMAGENS: A Panini não disponibiliza URLs públicas/CDN para as figurinhas físicas nem digitais. Para imagens reais dos jogadores, recomenda-se usar a API do Transfermarkt ou SofaScore (ex: https://img.sofascore.com/api/v1/player/{id}/image) ou scraping autorizado do app paninicollection.fifa.com após autenticação.",
   "figurinhas": [
     {
+      "numero": "00",
+      "nome": "Logo Panini",
+      "selecao": "—",
+      "clube": "—",
+      "especial": true,
+      "img_url": null
+    },
+    {
+      "numero": "FWC1",
+      "nome": "Emblema Oficial",
+      "selecao": "—",
+      "clube": "—",
+      "especial": true,
+      "img_url": null
+    },
+    {
+      "numero": "FWC2",
+      "nome": "Emblema Oficial (var.)",
+      "selecao": "—",
+      "clube": "—",
+      "especial": true,
+      "img_url": null
+    },
+    {
+      "numero": "FWC3",
+      "nome": "Mascotes Oficiais",
+      "selecao": "—",
+      "clube": "—",
+      "especial": true,
+      "img_url": null
+    },
+    {
+      "numero": "FWC4",
+      "nome": "Slogan Oficial",
+      "selecao": "—",
+      "clube": "—",
+      "especial": true,
+      "img_url": null
+    },
+    {
+      "numero": "FWC5",
+      "nome": "Bola Oficial",
+      "selecao": "—",
+      "clube": "—",
+      "especial": true,
+      "img_url": null
+    },
+    {
+      "numero": "FWC6",
+      "nome": "Países Sede – Canadá",
+      "selecao": "—",
+      "clube": "—",
+      "especial": true,
+      "img_url": null
+    },
+    {
+      "numero": "FWC7",
+      "nome": "Países Sede – México",
+      "selecao": "—",
+      "clube": "—",
+      "especial": true,
+      "img_url": null
+    },
+    {
+      "numero": "FWC8",
+      "nome": "Países Sede – EUA",
+      "selecao": "—",
+      "clube": "—",
+      "especial": true,
+      "img_url": null
+    },
+    {
+      "numero": "FWC9",
+      "nome": "Itália 1934 – História",
+      "selecao": "—",
+      "clube": "—",
+      "especial": true,
+      "img_url": null
+    },
+    {
+      "numero": "FWC10",
+      "nome": "Uruguai 1950 – História",
+      "selecao": "—",
+      "clube": "—",
+      "especial": true,
+      "img_url": null
+    },
+    {
+      "numero": "FWC11",
+      "nome": "Alemanha Oc. 1954 – História",
+      "selecao": "—",
+      "clube": "—",
+      "especial": true,
+      "img_url": null
+    },
+    {
+      "numero": "FWC12",
+      "nome": "Brasil 1962 – História",
+      "selecao": "—",
+      "clube": "—",
+      "especial": true,
+      "img_url": null
+    },
+    {
+      "numero": "FWC13",
+      "nome": "Alemanha Oc. 1974 – História",
+      "selecao": "—",
+      "clube": "—",
+      "especial": true,
+      "img_url": null
+    },
+    {
+      "numero": "FWC14",
+      "nome": "Argentina 1986 – História",
+      "selecao": "—",
+      "clube": "—",
+      "especial": true,
+      "img_url": null
+    },
+    {
+      "numero": "FWC15",
+      "nome": "Brasil 1994 – História",
+      "selecao": "—",
+      "clube": "—",
+      "especial": true,
+      "img_url": null
+    },
+    {
+      "numero": "FWC16",
+      "nome": "Brasil 2002 – História",
+      "selecao": "—",
+      "clube": "—",
+      "especial": true,
+      "img_url": null
+    },
+    {
+      "numero": "FWC17",
+      "nome": "Itália 2006 – História",
+      "selecao": "—",
+      "clube": "—",
+      "especial": true,
+      "img_url": null
+    },
+    {
+      "numero": "FWC18",
+      "nome": "Alemanha 2014 – História",
+      "selecao": "—",
+      "clube": "—",
+      "especial": true,
+      "img_url": null
+    },
+    {
+      "numero": "FWC19",
+      "nome": "Argentina 2022 – História",
+      "selecao": "—",
+      "clube": "—",
+      "especial": true,
+      "img_url": null
+    },
+    {
       "numero": "ALG1",
       "nome": "Logo Argélia",
       "selecao": "Argélia",
