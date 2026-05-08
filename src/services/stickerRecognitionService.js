@@ -54,7 +54,7 @@ export async function recognizeStickerFromImage(imageData) {
       });
     }
 
-    const prompt = "Você é um especialista em figurinhas da Copa do Mundo 2026. Analise a imagem desta figurinha. Extraia as informações disponíveis, como número (ex: BRA-001, PAN-002), nome do jogador ou seleção, e se é escudo ou jogador. Retorne um JSON com os campos: numero, nome, selecao. Seja o mais preciso possível no campo 'numero'. Retorne apenas o JSON limpo, sem marcações markdown como ```json.";
+    const prompt = "Você é um especialista em figurinhas da Copa do Mundo 2026. A imagem pode ser a FRENTE da figurinha (contém o nome do jogador e a seleção) ou o VERSO (contém apenas o código alfanumérico, ex: BRA-1, PAN-10). Extraia o que estiver visível. Retorne um JSON com os campos: 'numero' (se visível), 'nome' (se visível), 'selecao' (se visível). Se a informação não estiver na foto, envie null. Retorne APENAS o JSON limpo, sem marcações markdown.";
 
     const payload = {
       contents: [
@@ -110,29 +110,23 @@ export async function recognizeStickerFromImage(imageData) {
     let matchedSticker = null;
     let confidence = 0.99;
 
-    // Busca pelo número
+    let numberMatch = null;
     if (aiResult.numero) {
       const rawNum = String(aiResult.numero).toUpperCase();
-      
-      // 1. Tenta match exato
-      matchedSticker = stickersData.find(s => s.numero.toUpperCase() === rawNum);
-      
-      // 2. Tenta match flexível (remove espaços, hífens e zeros extras)
-      if (!matchedSticker) {
+      numberMatch = stickersData.find(s => s.numero.toUpperCase() === rawNum);
+      if (!numberMatch) {
         const normalize = (n) => String(n).replace(/[-\s]/g, '').replace(/([A-Z]+)0+([1-9])/g, '$1$2').toUpperCase();
         const normAi = normalize(rawNum);
-        matchedSticker = stickersData.find(s => normalize(s.numero) === normAi);
-        if (matchedSticker) confidence = 0.95; // Confiança alta, mas precisou corrigir
+        numberMatch = stickersData.find(s => normalize(s.numero) === normAi);
       }
     }
 
-    // Fallback: Busca por nome e seleção (Sistema de Pontuação)
-    if (!matchedSticker && aiResult.nome) {
+    let nameMatch = null;
+    let highestScore = 0;
+    
+    if (aiResult.nome) {
       const queryName = String(aiResult.nome).toLowerCase().trim();
       const querySelecao = aiResult.selecao ? String(aiResult.selecao).toLowerCase().trim() : "";
-
-      let bestMatch = null;
-      let highestScore = 0;
 
       for (const s of stickersData) {
         let score = 0;
@@ -141,34 +135,53 @@ export async function recognizeStickerFromImage(imageData) {
 
         // 1. Avalia o Nome
         if (sName === queryName) {
-          score += 50; // Match exato é muito forte
+          score += 50;
         } else if (sName.includes(queryName) || queryName.includes(sName)) {
-           // Match parcial: só ganha pontos se não for uma palavra muito curta, para evitar colisões bobas
-           if (sName.length >= 4 && queryName.length >= 4) {
-             score += 15;
-           }
+           if (sName.length >= 4 && queryName.length >= 4) score += 15;
         }
 
         // 2. Avalia a Seleção
         if (querySelecao) {
           if (sSel === querySelecao) {
-            score += 30; // Match exato de seleção
+            score += 30;
           } else if (sSel.includes(querySelecao) || querySelecao.includes(sSel)) {
-            score += 10; // Match parcial de seleção
+            score += 10;
           }
         }
 
         if (score > highestScore) {
           highestScore = score;
-          bestMatch = s;
+          nameMatch = s;
         }
       }
-
-      // Só aceitamos o match se a pontuação for razoável (pelo menos um match parcial bom ou nome exato)
-      if (bestMatch && highestScore >= 15) {
-        matchedSticker = bestMatch;
-        confidence = highestScore >= 50 ? 0.90 : 0.80; // Ajuste da confiança baseada na pontuação
+      
+      // Filtra matches ruins
+      if (highestScore < 15) {
+        nameMatch = null;
       }
+    }
+
+    // 3. Algoritmo de Decisão de Conflito (Número OCR vs Nome)
+    if (numberMatch && nameMatch && numberMatch.id !== nameMatch.id) {
+       // Conflito detectado! 
+       // Ex: IA leu o número "GHA1" (Logo) mas o nome "Antoine Semenyo" (GHA17).
+       // Como números pequenos podem ser cortados na foto, se o score do Nome for ALTÍSSIMO (Nome + Seleção bateram perfeitos), o Nome vence.
+       if (highestScore >= 80) {
+         matchedSticker = nameMatch;
+         confidence = 0.90; // Alta precisão no nome
+       } else {
+         matchedSticker = numberMatch;
+         confidence = 0.85; // Prioriza o número, mas avisa que a precisão caiu pelo conflito
+       }
+    } else {
+       // Sem conflito ou apenas um dos dois retornou
+       if (numberMatch) {
+         matchedSticker = numberMatch;
+         confidence = (nameMatch && numberMatch.id === nameMatch.id) ? 0.99 : 0.95;
+       } else if (nameMatch) {
+         matchedSticker = nameMatch;
+         confidence = highestScore >= 50 ? 0.90 : 0.80;
+       }
     }
 
     if (!matchedSticker) {
