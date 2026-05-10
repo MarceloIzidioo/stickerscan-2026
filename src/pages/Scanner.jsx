@@ -42,6 +42,12 @@ export default function Scanner() {
       const scanResult = await recognizeStickerFromImage(imageUrl);
       markScannerUsed();
       setResult(scanResult);
+      
+      // Checa se já possui a figurinha para avisar imediatamente
+      const currentQty = collection[scanResult.match.id] || 0;
+      if (currentQty > 0) {
+        setToast({ show: true, message: `⚠️ Atenção: Você já possui a figurinha ${scanResult.match.nome} (${currentQty}x)!` });
+      }
     } catch (e) {
       setResult({ error: e.message || 'Erro ao analisar a imagem' });
     }
@@ -118,6 +124,11 @@ export default function Scanner() {
       const scanResult = await recognizeStickerFromImage(imageData);
       markScannerUsed();
       setResult(scanResult);
+      
+      const currentQty = collection[scanResult.match.id] || 0;
+      if (currentQty > 0) {
+        setToast({ show: true, message: `⚠️ Atenção: Você já possui a figurinha ${scanResult.match.nome} (${currentQty}x)!` });
+      }
     } catch (e) {
       setResult({ error: e.message || 'Erro ao analisar a imagem' });
     }
@@ -344,11 +355,16 @@ export default function Scanner() {
                 marginBottom: 14,
               }}>
             <span style={{
-              fontSize: 13,
-              color: '#4ade80',
-              fontWeight: 600,
+              fontSize: 14,
+              color: qty > 0 ? '#facc15' : '#4ade80',
+              fontWeight: 700,
+              padding: '6px 14px',
+              borderRadius: '20px',
+              background: qty > 0 ? 'rgba(234,179,8,0.2)' : 'rgba(34,197,94,0.2)',
+              display: 'inline-block',
+              border: `1px solid ${qty > 0 ? 'rgba(234,179,8,0.4)' : 'rgba(34,197,94,0.4)'}`
             }}>
-              ✅ Figurinha identificada!
+              {qty > 0 ? `⚠️ Você já tem essa figurinha (${qty}x)` : '✅ Figurinha nova encontrada!'}
             </span>
           </div>
 

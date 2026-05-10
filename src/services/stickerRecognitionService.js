@@ -36,7 +36,7 @@ export async function recognizeStickerFromImage(imageData) {
     // Busca os dados da imagem em base64 se for um object URL ou File
     let base64String = imageData;
     let mimeType = 'image/jpeg';
-    
+
     if (imageData.startsWith('data:')) {
       const parts = imageData.split(',');
       mimeType = parts[0].match(/:(.*?);/)[1];
@@ -54,7 +54,7 @@ export async function recognizeStickerFromImage(imageData) {
       });
     }
 
-    const prompt = "Você é um especialista em figurinhas da Copa do Mundo 2026. A imagem pode ser a FRENTE da figurinha (com nome e seleção) ou o VERSO (apenas com o código alfanumérico, ex: MAR14, BRA-1). Retorne um JSON estrito com os campos: 'numero' (OBRIGATÓRIO usar essa chave para o código alfanumérico do verso ou frente), 'nome' (se visível), 'selecao' (se visível). Se a informação não existir, use null. Retorne APENAS o JSON limpo.";
+    const prompt = "Você é um especialista em figurinhas da Copa do Mundo 2026. A imagem pode ser a FRENTE da figurinha (com nome e seleção) ou o VERSO (apenas com o código alfanumérico, ex: MAR14, BRA1). Retorne um JSON estrito com os campos: 'numero' (OBRIGATÓRIO usar essa chave para o código alfanumérico do verso ou frente), 'nome' (se visível), 'selecao' (se visível). Se a informação não existir, use null. Retorne APENAS o JSON limpo.";
 
     const payload = {
       contents: [
@@ -88,13 +88,13 @@ export async function recognizeStickerFromImage(imageData) {
     }
 
     const data = await response.json();
-    
+
     if (!data.candidates || data.candidates.length === 0) {
       throw new Error("A IA não retornou resultados visuais ou foi bloqueada.");
     }
 
     const aiResultText = data.candidates[0].content.parts[0].text;
-    
+
     let aiResult;
     try {
       const cleanText = aiResultText.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
@@ -112,7 +112,7 @@ export async function recognizeStickerFromImage(imageData) {
 
     let numberMatch = null;
     const extractedNum = aiResult.numero || aiResult.codigo || aiResult.número || aiResult.id;
-    
+
     if (extractedNum) {
       const rawNum = String(extractedNum).toUpperCase();
       numberMatch = stickersData.find(s => s.numero.toUpperCase() === rawNum);
@@ -125,7 +125,7 @@ export async function recognizeStickerFromImage(imageData) {
 
     let nameMatch = null;
     let highestScore = 0;
-    
+
     if (aiResult.nome) {
       const queryName = String(aiResult.nome).toLowerCase().trim();
       const querySelecao = aiResult.selecao ? String(aiResult.selecao).toLowerCase().trim() : "";
@@ -139,7 +139,7 @@ export async function recognizeStickerFromImage(imageData) {
         if (sName === queryName) {
           score += 50;
         } else if (sName.includes(queryName) || queryName.includes(sName)) {
-           if (sName.length >= 4 && queryName.length >= 4) score += 15;
+          if (sName.length >= 4 && queryName.length >= 4) score += 15;
         }
 
         // 2. Avalia a Seleção
@@ -156,7 +156,7 @@ export async function recognizeStickerFromImage(imageData) {
           nameMatch = s;
         }
       }
-      
+
       // Filtra matches ruins
       if (highestScore < 15) {
         nameMatch = null;
@@ -165,25 +165,25 @@ export async function recognizeStickerFromImage(imageData) {
 
     // 3. Algoritmo de Decisão de Conflito (Número OCR vs Nome)
     if (numberMatch && nameMatch && numberMatch.id !== nameMatch.id) {
-       // Conflito detectado! 
-       // Ex: IA leu o número "GHA1" (Logo) mas o nome "Antoine Semenyo" (GHA17).
-       // Como números pequenos podem ser cortados na foto, se o score do Nome for ALTÍSSIMO (Nome + Seleção bateram perfeitos), o Nome vence.
-       if (highestScore >= 80) {
-         matchedSticker = nameMatch;
-         confidence = 0.90; // Alta precisão no nome
-       } else {
-         matchedSticker = numberMatch;
-         confidence = 0.85; // Prioriza o número, mas avisa que a precisão caiu pelo conflito
-       }
+      // Conflito detectado! 
+      // Ex: IA leu o número "GHA1" (Logo) mas o nome "Antoine Semenyo" (GHA17).
+      // Como números pequenos podem ser cortados na foto, se o score do Nome for ALTÍSSIMO (Nome + Seleção bateram perfeitos), o Nome vence.
+      if (highestScore >= 80) {
+        matchedSticker = nameMatch;
+        confidence = 0.90; // Alta precisão no nome
+      } else {
+        matchedSticker = numberMatch;
+        confidence = 0.85; // Prioriza o número, mas avisa que a precisão caiu pelo conflito
+      }
     } else {
-       // Sem conflito ou apenas um dos dois retornou
-       if (numberMatch) {
-         matchedSticker = numberMatch;
-         confidence = (nameMatch && numberMatch.id === nameMatch.id) ? 0.99 : 0.95;
-       } else if (nameMatch) {
-         matchedSticker = nameMatch;
-         confidence = highestScore >= 50 ? 0.90 : 0.80;
-       }
+      // Sem conflito ou apenas um dos dois retornou
+      if (numberMatch) {
+        matchedSticker = numberMatch;
+        confidence = (nameMatch && numberMatch.id === nameMatch.id) ? 0.99 : 0.95;
+      } else if (nameMatch) {
+        matchedSticker = nameMatch;
+        confidence = highestScore >= 50 ? 0.90 : 0.80;
+      }
     }
 
     if (!matchedSticker) {
