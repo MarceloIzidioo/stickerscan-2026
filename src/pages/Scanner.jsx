@@ -43,8 +43,11 @@ export default function Scanner() {
       markScannerUsed();
       setResult(scanResult);
       
+      const freshCollection = getCollection();
+      setCollection(freshCollection);
+      
       // Checa se já possui a figurinha para avisar imediatamente
-      const currentQty = collection[scanResult.match.id] || 0;
+      const currentQty = freshCollection[scanResult.match.id] || 0;
       if (currentQty > 0) {
         setToast({ show: true, message: `⚠️ Atenção: Você já possui a figurinha ${scanResult.match.nome} (${currentQty}x)!` });
       }
@@ -125,7 +128,10 @@ export default function Scanner() {
       markScannerUsed();
       setResult(scanResult);
       
-      const currentQty = collection[scanResult.match.id] || 0;
+      const freshCollection = getCollection();
+      setCollection(freshCollection);
+      
+      const currentQty = freshCollection[scanResult.match.id] || 0;
       if (currentQty > 0) {
         setToast({ show: true, message: `⚠️ Atenção: Você já possui a figurinha ${scanResult.match.nome} (${currentQty}x)!` });
       }
