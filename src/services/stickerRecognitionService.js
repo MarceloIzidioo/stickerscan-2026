@@ -143,7 +143,31 @@ export async function recognizeStickerFromImage(imageData) {
         if (sName === queryName) {
           score += 50;
         } else if (sName.includes(queryName) || queryName.includes(sName)) {
-          if (sName.length >= 4 && queryName.length >= 4) score += 15;
+          if (sName.length >= 4 && queryName.length >= 4) score += 20;
+        }
+
+        // Avaliação avançada por palavras (Fuzzy Match Simples)
+        const queryWords = queryName.split(/\s+/).filter(w => w.length >= 3);
+        const sNameWords = sName.split(/\s+/).filter(w => w.length >= 3);
+        
+        let wordsMatched = 0;
+        for (const qw of queryWords) {
+          for (const sw of sNameWords) {
+             // Match exato ou match pelas 4 primeiras letras (resolve Rodriguez vs Rodrigues)
+             if (qw === sw || (qw.length >= 5 && sw.length >= 5 && (qw.includes(sw.substring(0, 4)) || sw.includes(qw.substring(0, 4))))) {
+               wordsMatched++;
+               break;
+             }
+          }
+        }
+        
+        if (wordsMatched > 0) {
+          score += wordsMatched * 20; // 20 pontos por palavra
+          
+          // Bônus gigantesco se acertou a maioria do nome do jogador (ex: "Jose Luiz" para "Jose Luiz Rodriguez")
+          if (wordsMatched >= sNameWords.length - 1 && wordsMatched >= 2) {
+            score += 40;
+          }
         }
 
         // 2. Avalia a Seleção
