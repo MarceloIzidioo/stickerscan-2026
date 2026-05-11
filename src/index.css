@@ -495,10 +495,10 @@ h1, h2, h3, h4, h5, h6 {
 /* Toast notification */
 .toast {
   position: fixed;
-  bottom: 90px;
+  top: 20px;
   left: 50%;
-  transform: translateX(-50%) translateY(100px);
-  padding: 12px 24px;
+  transform: translateX(-50%) translateY(-100px);
+  padding: 12px 20px;
   border-radius: 12px;
   background: rgba(10, 22, 40, 0.95);
   backdrop-filter: blur(16px);
@@ -508,8 +508,11 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: 500;
   z-index: 9999;
   transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  white-space: nowrap;
-  max-width: 90vw;
+  white-space: normal;
+  text-align: center;
+  width: 90vw;
+  max-width: 400px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
 }
 
 .toast.show {

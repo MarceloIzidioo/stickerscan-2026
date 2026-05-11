@@ -126,14 +126,18 @@ export async function recognizeStickerFromImage(imageData) {
     let nameMatch = null;
     let highestScore = 0;
 
+    const removeAccents = (str) => {
+      return str ? str.normalize("NFD").replace(/[\u0300-\u036f]/g, "") : "";
+    };
+
     if (aiResult.nome) {
-      const queryName = String(aiResult.nome).toLowerCase().trim();
-      const querySelecao = aiResult.selecao ? String(aiResult.selecao).toLowerCase().trim() : "";
+      const queryName = removeAccents(String(aiResult.nome).toLowerCase().trim());
+      const querySelecao = aiResult.selecao ? removeAccents(String(aiResult.selecao).toLowerCase().trim()) : "";
 
       for (const s of stickersData) {
         let score = 0;
-        const sName = s.nome.toLowerCase();
-        const sSel = s.selecao.toLowerCase();
+        const sName = removeAccents(s.nome.toLowerCase());
+        const sSel = removeAccents(s.selecao.toLowerCase());
 
         // 1. Avalia o Nome
         if (sName === queryName) {
