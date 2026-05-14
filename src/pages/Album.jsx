@@ -3,7 +3,7 @@ import { createPortal } from 'react-dom';
 import { useSearchParams } from 'react-router-dom';
 import stickersData from '../data/stickers';
 import { getCollection, addSticker, removeSticker, getViewMode } from '../services/collectionService';
-import { getStickerStatus, getTeams, TEAM_FLAGS, getGroupForTeam, GROUPS_ORDER, getTeamSortIndex } from '../utils/statusUtils';
+import { getStickerStatus, getTeams, TEAM_FLAGS, getGroupForTeam, GROUPS_ORDER, getTeamSortIndex, vibrate, getTeamProgress } from '../utils/statusUtils';
 import StickerCard from '../components/StickerCard';
 import Toast from '../components/Toast';
 
@@ -33,14 +33,26 @@ export default function Album() {
   const rarities = ['Base', 'Especial'];
 
   const handleAdd = useCallback((id) => {
+    const sticker = stickersData.find(s => s.id === id);
+    const beforeCollection = getCollection();
+    const beforeProgress = getTeamProgress(beforeCollection, stickersData, sticker.selecao).percentage;
+    
     const updated = addSticker(id);
     setCollection({ ...updated });
-    const sticker = stickersData.find(s => s.id === id);
+    
+    const afterProgress = getTeamProgress(updated, stickersData, sticker.selecao).percentage;
     const qty = updated[id] || 0;
-    if (qty === 1) {
-      setToast({ show: true, message: `✅ ${sticker.nome} adicionada!` });
+    
+    if (beforeProgress < 100 && afterProgress === 100) {
+      vibrate([50, 100, 50, 100, 50]);
+      setToast({ show: true, message: `🎉 Seleção ${sticker.selecao} completa!` });
     } else {
-      setToast({ show: true, message: `🔄 ${sticker.nome} - ${qty} unidades` });
+      vibrate(50);
+      if (qty === 1) {
+        setToast({ show: true, message: `✅ ${sticker.nome} adicionada!` });
+      } else {
+        setToast({ show: true, message: `🔄 ${sticker.nome} - ${qty} unidades` });
+      }
     }
   }, []);
 

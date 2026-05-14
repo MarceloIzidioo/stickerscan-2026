@@ -1,7 +1,8 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { recognizeStickerFromImage } from '../services/stickerRecognitionService';
 import { addSticker, getCollection, markScannerUsed } from '../services/collectionService';
-import { getStickerStatus, getStatusLabel, TEAM_FLAGS } from '../utils/statusUtils';
+import { getStickerStatus, getStatusLabel, TEAM_FLAGS, vibrate, getTeamProgress } from '../utils/statusUtils';
+import stickersData from '../data/stickers';
 import Toast from '../components/Toast';
 
 export default function Scanner() {
@@ -42,6 +43,7 @@ export default function Scanner() {
       const scanResult = await recognizeStickerFromImage(imageUrl);
       markScannerUsed();
       setResult(scanResult);
+      vibrate(50);
       
       const freshCollection = getCollection();
       setCollection(freshCollection);
@@ -127,6 +129,7 @@ export default function Scanner() {
       const scanResult = await recognizeStickerFromImage(imageData);
       markScannerUsed();
       setResult(scanResult);
+      vibrate(50);
       
       const freshCollection = getCollection();
       setCollection(freshCollection);
@@ -161,13 +164,26 @@ export default function Scanner() {
   // Add to collection
   const handleAddToCollection = () => {
     if (!result?.match) return;
+    
+    const beforeCollection = getCollection();
+    const beforeProgress = getTeamProgress(beforeCollection, stickersData, result.match.selecao).percentage;
+    
     const updated = addSticker(result.match.id);
     setCollection({ ...updated });
+    
+    const afterProgress = getTeamProgress(updated, stickersData, result.match.selecao).percentage;
     const qty = updated[result.match.id] || 0;
-    if (qty === 1) {
-      setToast({ show: true, message: `✅ Nova figurinha adicionada! ${result.match.nome}` });
+    
+    if (beforeProgress < 100 && afterProgress === 100) {
+      vibrate([50, 100, 50, 100, 50]);
+      setToast({ show: true, message: `🎉 Seleção ${result.match.selecao} completa!` });
     } else {
-      setToast({ show: true, message: `🔄 ${result.match.nome} - Agora com ${qty} unidades` });
+      vibrate(50);
+      if (qty === 1) {
+        setToast({ show: true, message: `✅ Nova figurinha adicionada! ${result.match.nome}` });
+      } else {
+        setToast({ show: true, message: `🔄 ${result.match.nome} - Agora com ${qty} unidades` });
+      }
     }
     setResult(null);
     setCapturedImage(null);

@@ -58,6 +58,16 @@ export const TEAM_FLAGS = {
   '—': '✨'
 };
 
+export function vibrate(pattern = 50) {
+  if (typeof navigator !== 'undefined' && navigator.vibrate) {
+    try {
+      navigator.vibrate(pattern);
+    } catch (e) {
+      // Ignora silenciosamente se o dispositivo não suportar
+    }
+  }
+}
+
 export const WORLD_CUP_GROUPS = [
   { name: 'Grupo A', teams: ['México', 'África do Sul', 'Coreia do Sul', 'Tchéquia'] },
   { name: 'Grupo B', teams: ['Canadá', 'Bósnia e Herzegovina', 'Catar', 'Suíça'] },
