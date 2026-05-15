@@ -44,14 +44,14 @@ export default function Album() {
     const qty = updated[id] || 0;
     
     if (beforeProgress < 100 && afterProgress === 100) {
-      vibrate([50, 100, 50, 100, 50]);
+      vibrate([100, 100, 100, 100, 300]);
       setToast({ show: true, message: `🎉 Seleção ${sticker.selecao} completa!` });
     } else {
       if (qty === 1) {
-        vibrate(50);
+        vibrate(100);
         setToast({ show: true, message: `✅ ${sticker.nome} adicionada!` });
       } else {
-        vibrate([30, 50, 30]);
+        vibrate([50, 150, 50]);
         setToast({ show: true, message: `🔄 ${sticker.nome} - ${qty} unidades` });
       }
     }

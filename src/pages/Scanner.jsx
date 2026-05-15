@@ -43,7 +43,6 @@ export default function Scanner() {
       const scanResult = await recognizeStickerFromImage(imageUrl);
       markScannerUsed();
       setResult(scanResult);
-      vibrate(50);
       
       const freshCollection = getCollection();
       setCollection(freshCollection);
@@ -51,7 +50,10 @@ export default function Scanner() {
       // Checa se já possui a figurinha para avisar imediatamente
       const currentQty = freshCollection[scanResult.match.id] || 0;
       if (currentQty > 0) {
+        vibrate([50, 150, 50]); // Vibração de repetida
         setToast({ show: true, message: `⚠️ Atenção: Você já possui a figurinha ${scanResult.match.nome} (${currentQty}x)!` });
+      } else {
+        vibrate(100); // Vibração de figurinha nova
       }
     } catch (e) {
       setResult({ error: e.message || 'Erro ao analisar a imagem' });
@@ -129,14 +131,16 @@ export default function Scanner() {
       const scanResult = await recognizeStickerFromImage(imageData);
       markScannerUsed();
       setResult(scanResult);
-      vibrate(50);
       
       const freshCollection = getCollection();
       setCollection(freshCollection);
       
       const currentQty = freshCollection[scanResult.match.id] || 0;
       if (currentQty > 0) {
+        vibrate([50, 150, 50]); // Vibração de repetida
         setToast({ show: true, message: `⚠️ Atenção: Você já possui a figurinha ${scanResult.match.nome} (${currentQty}x)!` });
+      } else {
+        vibrate(100); // Vibração de figurinha nova
       }
     } catch (e) {
       setResult({ error: e.message || 'Erro ao analisar a imagem' });
@@ -175,14 +179,14 @@ export default function Scanner() {
     const qty = updated[result.match.id] || 0;
     
     if (beforeProgress < 100 && afterProgress === 100) {
-      vibrate([50, 100, 50, 100, 50]);
+      vibrate([100, 100, 100, 100, 300]);
       setToast({ show: true, message: `🎉 Seleção ${result.match.selecao} completa!` });
     } else {
       if (qty === 1) {
-        vibrate(50);
+        vibrate(100);
         setToast({ show: true, message: `✅ Nova figurinha adicionada! ${result.match.nome}` });
       } else {
-        vibrate([30, 50, 30]);
+        vibrate([50, 150, 50]);
         setToast({ show: true, message: `🔄 ${result.match.nome} - Agora com ${qty} unidades` });
       }
     }
