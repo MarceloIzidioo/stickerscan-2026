@@ -178,10 +178,11 @@ export default function Scanner() {
       vibrate([50, 100, 50, 100, 50]);
       setToast({ show: true, message: `🎉 Seleção ${result.match.selecao} completa!` });
     } else {
-      vibrate(50);
       if (qty === 1) {
+        vibrate(50);
         setToast({ show: true, message: `✅ Nova figurinha adicionada! ${result.match.nome}` });
       } else {
+        vibrate([30, 50, 30]);
         setToast({ show: true, message: `🔄 ${result.match.nome} - Agora com ${qty} unidades` });
       }
     }

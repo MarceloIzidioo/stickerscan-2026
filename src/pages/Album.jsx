@@ -47,10 +47,11 @@ export default function Album() {
       vibrate([50, 100, 50, 100, 50]);
       setToast({ show: true, message: `🎉 Seleção ${sticker.selecao} completa!` });
     } else {
-      vibrate(50);
       if (qty === 1) {
+        vibrate(50);
         setToast({ show: true, message: `✅ ${sticker.nome} adicionada!` });
       } else {
+        vibrate([30, 50, 30]);
         setToast({ show: true, message: `🔄 ${sticker.nome} - ${qty} unidades` });
       }
     }
