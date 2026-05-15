@@ -44,14 +44,14 @@ export default function Album() {
     const qty = updated[id] || 0;
     
     if (beforeProgress < 100 && afterProgress === 100) {
-      vibrate([100, 100, 100, 100, 300]);
+      vibrate([300, 150, 300, 150, 300]); // Team Complete: longo, longo, longo
       setToast({ show: true, message: `🎉 Seleção ${sticker.selecao} completa!` });
     } else {
       if (qty === 1) {
-        vibrate(100);
+        vibrate(50); // Nova: toque muito rápido
         setToast({ show: true, message: `✅ ${sticker.nome} adicionada!` });
       } else {
-        vibrate([50, 150, 50]);
+        vibrate([100, 200, 100, 200, 100]); // Repetida: três toques espaçados
         setToast({ show: true, message: `🔄 ${sticker.nome} - ${qty} unidades` });
       }
     }
